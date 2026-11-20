@@ -1,0 +1,43 @@
+package com.example.order_service;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
+
+import java.util.*;
+
+@CrossOrigin(origins = {
+    "http://localhost:5500",
+    "http://localhost:3000",
+    "http://localhost:5173"
+})
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    private final RestClient restClient = RestClient.create("http://localhost:8081");
+
+    @GetMapping
+    public List<Map<String, Object>> getOrders() {
+        return List.of(
+                Map.of("id", 101, "productId", 1, "quantity", 2),
+                Map.of("id", 102, "productId", 2, "quantity", 1));
+    }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<String> getProduct(@PathVariable int id) {
+        try {
+            String product = restClient.get()
+                    .uri("/api/products/{id}", id)
+                    .retrieve()
+                    .body(String.class);
+            return ResponseEntity.ok(product);
+        } catch (RestClientResponseException exception) {
+            if (exception.getStatusCode().value() == 404) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.status(exception.getStatusCode()).build();
+        }
+    }
+}
