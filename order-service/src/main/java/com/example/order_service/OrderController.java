@@ -7,11 +7,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import java.util.*;
 
-@CrossOrigin(origins = {
-    "http://localhost:5500",
-    "http://localhost:3000",
-    "http://localhost:5173"
-})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {

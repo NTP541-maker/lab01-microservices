@@ -4,11 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
-@CrossOrigin(origins = {
-    "http://localhost:5500",
-    "http://localhost:3000",
-    "http://localhost:5173"
-})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
